@@ -1,7 +1,5 @@
 // tiny2 
 (function() {
-
-
     var tag = /<[^>]+\/?>/g;
     var patterns = {
         "csharp": [
