@@ -28,14 +28,28 @@
 				"keyword"
 			]
 		],
-		// Need to update vb to the new style
-		// "vb": [
-		//     ["singleline", /'.*?\n/g],         // single line comments
-		//     ["string", /'(\\'|[^'])'/g],       // char literals
-		//     ["string", /@"(""|[^"])*"/g],      // literal strings
-		//     ["string", /"(\\"|[^"])*"/g],      // strings
-		//     ["keyword", /\b(Private|Public|Function|Sub|Me|True|False|New|Partial|Class|CType|Shared|End|ByVal|Handles|If|Else|Then|For|As|In|Next|Each|Protected|Return|Imports|Overridable)\b/g]
-		// ],
+		"vb": [
+			[   // single line comments
+				/'.*?\n/,
+				"singleline"
+			],
+			[   // char literals
+				/'(?:\\'|[^'])'/,
+				"string"
+			],
+			[   // literal strings
+				/@"(?:""|[^"])*"/,
+				"string"
+			],
+			[   // strings
+				/"(?:\\"|[^"])*"/,
+				"string"
+			],
+			[   // keywords
+				/\b(?:Private|Public|Function|Sub|Me|True|False|New|Partial|Class|CType|Shared|End|ByVal|Handles|If|Else|Then|For|As|In|Next|Each|Protected|Return|Imports|Overridable)\b/,
+				"keyword"
+			]
+		],
 		"xml": [
 			[   // comments
 				/<\!--[\s\S]*?-->/g,
@@ -47,8 +61,7 @@
 						/^\?|\?$/,
 						"keyword"
 					],
-					[
-		                // attribute strings
+					[   // attribute strings
 						/"[^"]*"/g,
 						"string"
 					],
@@ -82,7 +95,7 @@
 		return [];
 	}
 
-    // Check if we have a textContent property - this is used for cross-browser compatibility
+	// Check if we have a textContent property - this is used for cross-browser compatibility
 	var hasTextContent = false;
 	try {
 		hasTextContent = typeof (document.createElement("div").textContent) != "undefined";
@@ -136,11 +149,11 @@
 		var m = null, lastIndex = 0, all = [];
 		while (m = bigPattern.exec(src)) {
 			for (var i = 1; i < m.length; i++) {
-				if (typeof (m[i]) != "undefined") {
+				if (typeof(m[i]) != "undefined" && m[i] != "") {
 					// push the unmatched text up to here
 					all.push(src.substring(lastIndex, m.index));
 
-					if (typeof (names[i - 1]) == "string") {
+					if (typeof(names[i - 1]) == "string") {
 						// push the match, surrounded by tags
 						all.push('__LT__span class="' + names[i - 1] + '"__GT__');
 						all.push(m[i]);

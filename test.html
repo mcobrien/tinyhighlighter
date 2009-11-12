@@ -331,6 +331,75 @@ namespace BeatsWorking
 	}
 }
 </pre>
+
+<pre class="vb">
+Imports System.ComponentModel
+Imports System.Collections.Generic
+
+<DataObject()> _
+Public Class BugManager
+   ' Do not modify this class.
+
+   Private Shared _bugs As New List(Of Bug)()
+   Private Shared _nextBugId As Integer = 1
+
+   Private Sub New()
+   End Sub
+
+   Shared Sub New()
+      InitializeBugData()
+   End Sub
+
+   <DataObjectMethod(DataObjectMethodType.Select)> _
+   Public Shared Function GetAllBugs() As IEnumerable(Of Bug)
+      Return _bugs
+   End Function
+
+   <DataObjectMethod(DataObjectMethodType.Update)> _
+   Public Shared Sub UpdateBug(ByVal bug As Bug)
+
+      Dim context As New FindContext(bug)
+      Dim bugInList As Bug = _bugs.Find(AddressOf context.IsMatch)
+
+      If bugInList Is Nothing Then
+         Return
+      End If
+
+      bugInList.Description = bug.Description
+      bugInList.AssignedTo = bug.AssignedTo
+      bugInList.Status = bug.Status
+   End Sub
+
+   Private Shared Sub InitializeBugData()
+      AddNewBug("Error occured when Submit button is clicked.", "Tom")
+      AddNewBug("Would like to see the ID when a new item is added.", "Karen")
+      AddNewBug("Difficult to read yellow font on home page.", "Tom")
+      AddNewBug("Page not found error occurred when the link on the home " & "page was clicked.", "Karen")
+   End Sub
+
+   Private Shared Sub AddNewBug(ByVal bugDescription As String, ByVal reportedBy As String)
+      _nextBugId += 1
+      Dim id As Integer = _nextBugId
+      _bugs.Add(New Bug(id, bugDescription, BugStatus.Open, reportedBy))
+   End Sub
+
+   Private Class FindContext
+
+      Private _bug As Bug
+
+      Public Sub New(ByVal bug As Bug)
+         _bug = bug
+      End Sub
+
+      Public Function IsMatch(ByVal bug As Bug) As Boolean
+         Return (_bug.Id = bug.Id)
+      End Function
+   End Class
+
+End Class
+    
+</pre>
+
     </div>
 </div>
 
