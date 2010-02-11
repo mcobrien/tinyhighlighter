@@ -4,6 +4,7 @@ tinyhighlighter: syntax highlighting in under 7k
 Tinyhighlighter is a fast, simple syntax highlighter that generates clean HTML to colour-code programming languages. It adds absolutely the minimum markup required (everything is just a span with a short class name), and the whole thing is around 7k when minimized.
 
 Currently-supported languages include:
+
 *  C#
 *  VB.NET
 *  Java
